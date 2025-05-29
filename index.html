@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  </head>
+  <body>
+    <div class="api-key-section">
+      <input type="text" id="apiKey" placeholder="Enter API Key" />
+      <button onclick="saveApiKey()">Save API Key</button>
+    </div>
+
+    <div class="container">
+      <div id="loginSection">
+        <h2>Login</h2>
+        <div class="login-toggle">
+          <button class="toggle-btn active" onclick="toggleLoginMode('normal')">
+            Regular Login
+          </button>
+          <button class="toggle-btn" onclick="toggleLoginMode('first')">
+            First Time Login
+          </button>
+        </div>
+
+        <form id="loginForm">
+          <input type="email" id="username" placeholder="Email" required />
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+
+        <form id="firstLoginForm" style="display: none">
+          <input
+            type="email"
+            id="firstLoginEmail"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="text"
+            id="oneTimeToken"
+            placeholder="One-Time Token"
+            required
+          />
+          <input
+            type="password"
+            id="newPassword"
+            placeholder="New Password"
+            required
+          />
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+            required
+          />
+          <button type="submit">Set Password & Login</button>
+        </form>
+      </div>
+
+      <div id="homePage" style="display: none">
+        <nav class="nav-bar">
+          <h2>Welcome, <span id="homeUserDisplayName"></span></h2>
+          <div class="nav-buttons">
+            <button
+              id="registerNavButton"
+              onclick="showRegisterForm()"
+              style="display: none"
+            >
+              Register Users
+            </button>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+          </div>
+        </nav>
+        <div class="home-content">
+          <div class="main-layout">
+            <div class="main-content">
+              <!-- Move existing content here -->
+              <div class="dashboard-section">
+                <!-- Remove this duplicate online users card -->
+                <!-- <div class="online-users-card">
+                    <h4>Online Users</h4>
+                    <div id="onlineUsersList" class="users-list">
+                    </div>
+                </div> -->
+                <div
+                  id="chatInterface"
+                  class="chat-interface"
+                  style="display: none"
+                >
+                  <div class="chat-header">
+                    <button class="back-btn" onclick="closeChatInterface()">
+                      &larr;
+                    </button>
+                    <h4>Chat with <span id="chatRecipient"></span></h4>
+                  </div>
+                  <div id="messagesContainer" class="messages-container">
+                    <!-- Messages will appear here -->
+                  </div>
+                  <form id="messageForm" class="message-form">
+                    <input
+                      type="text"
+                      id="messageInput"
+                      placeholder="Type your message..."
+                      required
+                    />
+                    <button type="submit">Send</button>
+                  </form>
+                </div>
+                <div class="room-creation-card">
+                  <h4>Create New Room</h4>
+                  <form id="createRoomForm">
+                    <input
+                      type="text"
+                      id="roomName"
+                      placeholder="Room Name"
+                      required
+                    />
+                    <select id="roomType" required>
+                      <option value="">Select Room Type</option>
+                      <option value="public">Public</option>
+                      <option value="private">Private</option>
+                    </select>
+                    <button type="submit">Create Room</button>
+                  </form>
+                </div>
+                <div id="roomsList" class="rooms-list">
+                  <!-- Rooms will be displayed here -->
+                </div>
+                <div
+                  id="roomChatInterface"
+                  class="chat-interface"
+                  style="display: none"
+                >
+                  <div class="chat-header">
+                    <button class="back-btn" onclick="leaveRoom()">
+                      &larr;
+                    </button>
+                    <h4>Room: <span id="roomName"></span></h4>
+                    <button class="invite-btn" onclick="showInviteModal()">
+                      Invite Users
+                    </button>
+                  </div>
+                  <div id="roomMessagesContainer" class="messages-container">
+                    <!-- Room messages will appear here -->
+                  </div>
+                  <form id="roomMessageForm" class="message-form">
+                    <input
+                      type="text"
+                      id="roomMessageInput"
+                      placeholder="Type your message..."
+                      required
+                    />
+                    <button type="submit">Send</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="users-sidebar">
+              <div class="online-users-card">
+                <h4>Users</h4>
+                <div id="usersList" class="users-list">
+                  <!-- Users will be listed here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="welcomeSection" style="display: none">
+        <h2>Welcome, <span id="userDisplayName"></span>!</h2>
+        <div class="user-content">
+          <p>You are successfully logged in.</p>
+          <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+      </div>
+
+      <div id="adminSection" style="display: none">
+        <h2>Admin Panel - Register New User</h2>
+        <form id="adminRegisterForm">
+          <input type="text" id="newUsername" placeholder="Username" required />
+          <input type="email" id="newEmail" placeholder="Email" required />
+          <button type="submit">Register User</button>
+        </form>
+      </div>
+
+      <div
+        id="registrationSuccess"
+        style="display: none"
+        class="success-message"
+      >
+        <h3>User Registration Successful!</h3>
+        <div class="user-info">
+          <p><strong>Username:</strong> <span id="createdUsername"></span></p>
+          <p><strong>Email:</strong> <span id="createdEmail"></span></p>
+          <div class="token-container">
+            <p><strong>One-Time Setup Token:</strong></p>
+            <div class="copy-section">
+              <input type="text" id="setupToken" readonly />
+              <button type="button" id="copyTokenButton" class="copy-btn">
+                Copy Token
+              </button>
+            </div>
+            <p class="token-warning">
+              Please provide this token to the user. It can be used only once to
+              set their password.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="inviteModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Invite Users to Room</h4>
+          <button class="close-btn" onclick="closeInviteModal()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="user-selection">
+            <!-- Users will be listed here with checkboxes -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button onclick="sendInvites()" class="primary-btn">
+            Send Invites
+          </button>
+          <button onclick="closeInviteModal()" class="secondary-btn">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
