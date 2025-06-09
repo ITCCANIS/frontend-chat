@@ -94,16 +94,13 @@ async function loadRooms() {
   if (!apiKey || !jwt) return;
 
   try {
-    const response = await fetch(
-      "https://chatapp-backend-api-production.up.railway.app/api/getRooms",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": apiKey,
-          Authorization: jwt,
-        },
-      }
-    );
+    const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/getRooms", {
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": apiKey,
+        Authorization: jwt,
+      },
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -289,17 +286,14 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch(
-      "https://chatapp-backend-api-production.up.railway.app/api/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": apiKey,
-        },
-        body: JSON.stringify(loginData),
-      }
-    );
+    const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": apiKey,
+      },
+      body: JSON.stringify(loginData),
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -369,17 +363,14 @@ document
     };
 
     try {
-      const response = await fetch(
-        "https://chatapp-backend-api-production.up.railway.app/api/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": apiKey,
-          },
-          body: JSON.stringify(loginData),
-        }
-      );
+      const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": apiKey,
+        },
+        body: JSON.stringify(loginData),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -484,18 +475,15 @@ document
     };
 
     try {
-      const response = await fetch(
-        "https://chatapp-backend-api-production.up.railway.app/api/registerUser",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": apiKey,
-            Authorization: jwt,
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/registerUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": apiKey,
+          Authorization: jwt,
+        },
+        body: JSON.stringify(userData),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -554,19 +542,19 @@ function backToRegistration() {
 }
 
 function showRegisterForm() {
-  // Hide dashboard section
-  document.querySelector(".dashboard-section").style.display = "none";
-  // Show admin section
-  document.getElementById("adminSection").style.display = "block";
+    // Hide dashboard section
+    document.querySelector('.dashboard-section').style.display = 'none';
+    // Show admin section
+    document.getElementById('adminSection').style.display = 'block';
 }
 
 function backToHome() {
-  // Show dashboard section
-  document.querySelector(".dashboard-section").style.display = "block";
-  // Hide admin section
-  document.getElementById("adminSection").style.display = "none";
-  // Hide registration success message if visible
-  document.getElementById("registrationSuccess").style.display = "none";
+    // Show dashboard section
+    document.querySelector('.dashboard-section').style.display = 'block';
+    // Hide admin section
+    document.getElementById('adminSection').style.display = 'none';
+    // Hide registration success message if visible
+    document.getElementById('registrationSuccess').style.display = 'none';
 }
 
 // Add this after your existing event listeners
@@ -589,18 +577,15 @@ document
     };
 
     try {
-      const response = await fetch(
-        "https://chatapp-backend-api-production.up.railway.app/api/createRoom",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-Key": apiKey,
-            Authorization: jwt,
-          },
-          body: JSON.stringify(roomData),
-        }
-      );
+      const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/createRoom", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": apiKey,
+          Authorization: jwt,
+        },
+        body: JSON.stringify(roomData),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -767,16 +752,13 @@ async function loadAllUsers() {
   if (!apiKey || !jwt) return;
 
   try {
-    const response = await fetch(
-      "https://chatapp-backend-api-production.up.railway.app/api/getUsers",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": apiKey,
-          Authorization: jwt,
-        },
-      }
-    );
+    const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/getUsers", {
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": apiKey,
+        Authorization: jwt,
+      },
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -875,21 +857,18 @@ async function sendInvites() {
   }
 
   try {
-    const response = await fetch(
-      "https://chatapp-backend-api-production.up.railway.app/api/inviteUser",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": localStorage.getItem("apiKey"),
-          Authorization: localStorage.getItem("jwt"),
-        },
-        body: JSON.stringify({
-          roomName: roomName,
-          invitedusers: selectedUsers,
-        }),
-      }
-    );
+    const response = await fetch("https://chatapp-backend-api-production.up.railway.app/api/inviteUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": localStorage.getItem("apiKey"),
+        Authorization: localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        roomName: roomName,
+        invitedusers: selectedUsers,
+      }),
+    });
 
     if (response.ok) {
       showSuccess("Invitations sent successfully!");
