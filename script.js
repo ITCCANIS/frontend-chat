@@ -881,11 +881,11 @@ window.addEventListener('beforeunload', () => {
   if (socket) socket.disconnect();
 });
 
-// Pre-fill API key indicator on page load
+// Hardcode API key on every page load
 window.addEventListener('DOMContentLoaded', () => {
-  if (localStorage.getItem('apiKey')) {
-    // Just a silent indicator — no intrusive panel open
-    const toggleBtn = document.getElementById('settingsToggleBtn');
-    if (toggleBtn) toggleBtn.title = 'API Key is set — click to change';
-  }
+  const HARDCODED_KEY = 'ecv3jyfx7o630wyz9oejb2';
+  localStorage.setItem('apiKey', HARDCODED_KEY);
+
+  const toggleBtn = document.getElementById('settingsToggleBtn');
+  if (toggleBtn) toggleBtn.title = 'API Key is set — click to change';
 });

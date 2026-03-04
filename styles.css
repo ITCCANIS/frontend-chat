@@ -604,14 +604,16 @@ button:hover::before { transform: translateX(100%); }
     background: linear-gradient(180deg, rgba(102,126,234,0.04), rgba(118,75,162,0.03));
     border-left: 1px solid var(--border);
     padding: 20px 16px;
-    overflow-y: auto;
+    overflow: hidden;       /* sidebar itself must NOT scroll */
     display: flex;
     flex-direction: column;
 }
 .online-users-card {
     flex: 1;
+    min-height: 0;          /* allows flex child to shrink below content size */
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     border: none !important;
     padding: 0 !important;
     box-shadow: none !important;
@@ -669,6 +671,7 @@ button:hover::before { transform: translateX(100%); }
     gap: 2px;
     overflow-y: auto;
     flex: 1;
+    min-height: 0;          /* critical: allows the list to shrink and scroll */
 }
 .user-item {
     display: flex;
